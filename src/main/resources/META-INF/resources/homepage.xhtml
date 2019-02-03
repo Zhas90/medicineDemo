@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:sec="http://www.springframework.org/security/tags">
+
+<h:head>
+    <title>Demo project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+    <div>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <h:link value="Администрирование" />
+        </sec:authorize>
+    </div>
+
+    <h:form>
+
+        <p:panel>
+            <p:outputLabel value="#{doctorService.showGreeting()}" />
+        </p:panel>
+
+        <p:panel>
+            <p:outputLabel value="ИИН пациента" />
+            <p:inputText id="patientIin" value="#{patientService.iinForSearch}" />
+            <p:commandButton value="Найти" action="#{patientService.findByIin}" ajax="false"/>
+            <br/><br/>
+            <p:outputLabel value="#{patientService.patientData}" />
+            <p:outputLabel value="Если это новый пациент, то "
+                           rendered="#{patientService.patientData == ''}" />
+            <p:commandButton value="Добавить пациента"
+                             rendered="#{patientService.patientData == ''}"
+                             action="addPatient.xhtml?faces-redirect=true" />
+        </p:panel>
+
+        <p:panel>
+            <h:panelGrid columns="2" cellpadding="4">
+                <p:outputLabel value="Краткое описание"/><br/>
+                <p:inputTextarea id="statementTitle" value="#{statementService.statement.title}" rows="2" cols="53"/><br/>
+                <p:outputLabel value="Жалоба пациента"/><br/>
+                <p:inputTextarea id="patientComplaint" value="#{statementService.statement.patientComplaint}" rows="2" cols="53"/><br/>
+                <p:outputLabel value="Заключение"/><br/>
+                <p:inputTextarea id="statementConclusion" value="#{statementService.statement.conclusion}" rows="6" cols="53"/><br/>
+                <p:commandButton value="Сформировать выписку" action="#{statementService.save}" ajax="false" />
+            </h:panelGrid>
+        </p:panel>
+
+        <p:dialog header="Выписка сформирована" widgetVar="addStatementDialog"
+                  modal="true" resizable="false">
+            <h:panelGrid columns="1" cellpadding="4">
+                <p:outputLabel value="#{statementService.statement.title}"/><br/>
+            </h:panelGrid>
+        </p:dialog>
+
+    </h:form>
+
+    <h:form onsubmit="this.action='#{request.contextPath}/logout';"
+            class="logout-form">
+        <p:commandButton value="Logout" ajax="false" />
+    </h:form>
+
+</h:body>
+</html>

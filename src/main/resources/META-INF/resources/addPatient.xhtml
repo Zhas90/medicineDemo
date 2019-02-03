@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Новый пациент</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+    <h:form prependId="false">
+        <p:panel header="Введите данные пациента:">
+            <h:panelGrid columns="2" cellpadding="4">
+                <p:outputLabel for="iin" value="ИИН: "/>
+                <p:inputText id="iin" value="#{patientService.patient.iin}"/>
+
+                <p:outputLabel for="lastname" value="Фамилия: "/>
+                <p:inputText id="lastname" value="#{patientService.patient.lastname}"/>
+
+                <p:outputLabel for="firstname" value="Имя: "/>
+                <p:inputText id="firstname" value="#{patientService.patient.firstname}"/>
+
+                <p:commandButton value="Сохранить" action="#{patientService.save}" ajax="false" />
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+</h:body>
+</html>
